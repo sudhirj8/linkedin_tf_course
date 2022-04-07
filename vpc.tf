@@ -75,11 +75,11 @@ resource "aws_security_group" "sg-nodejs-instance" {
 }
 
 # INSTANCE
-# resource "aws_instance" "nodejs1" {
-#  ami = data.aws_ami.aws-linux.id
-#  instance_type = "t2.micro"
-#  subnet_id = aws_subnet.subnet1.id
-#  vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
+resource "aws_instance" "nodejs1" {
+  ami = data.aws_ami.aws-linux.id
+  instance_type = "t2.micro"
+  subnet_id = aws_subnet.subnet1.id
+  vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
 #  key_name               = var.ssh_key_name
 
 #  connection {
@@ -88,7 +88,7 @@ resource "aws_security_group" "sg-nodejs-instance" {
 #    user        = "ec2-user"
 #    private_key = file(var.private_key_path)
 #  }
-#}
+}
 
 
 # //////////////////////////////
@@ -121,7 +121,7 @@ data "aws_ami" "aws-linux" {
 # //////////////////////////////
 # OUTPUT
 # //////////////////////////////
-#output "instance-dns" {
-#  value = aws_instance.nodejs1.public_dns
-#}
+output "instance-dns" {
+  value = aws_instance.nodejs1.public_dns
+}
 
