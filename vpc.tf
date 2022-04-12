@@ -104,7 +104,7 @@ resource "aws_launch_template" "web-server" {
    iam_instance_profile {
     name = aws_iam_instance_profile.test_profile.name
   }
-    ami = data.aws_ami.aws-linux.id
+    iamge_id = data.aws_ami.aws-linux.id
     instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t2.small"
 #  key_name = "key-1"
@@ -115,7 +115,7 @@ resource "aws_launch_template" "web-server" {
 
 resource "aws_autoscaling_group" "asg-web" {
   launch_template = aws_launch_template.web-server.id
-  availability_zones   = data.aws_availability_zones.all.names
+  availability_zones   = data.aws_availability_zones.available.names
   min_size = 2
   max_size = 5
 
