@@ -107,33 +107,40 @@ resource "aws_instance" "nodejs1" {
 
 
 resource "aws_launch_template" "web-server" {
-  name = "web-server-template"
-  disable_api_termination = true
-  
-   iam_instance_profile {
+#  name = "web-server-template"
+
+  name_prefix = "my-lc-template"  
+  iam_instance_profile {
     name = aws_iam_instance_profile.test_profile.name
+
   }
-    image_id = data.aws_ami.aws-linux.id
-    instance_initiated_shutdown_behavior = "terminate"
-    instance_type = "t2.nano"
+  image_id = data.aws_ami.aws-linux.id
+  instance_type = "t2.nano"
+
+#  key_name = "key-1"
+#  user_data = "${base64encode(data.template_file.user_data_hw.rendered)}"
+
+  vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
+
+  disable_api_termination = true
   network_interfaces {
     associate_public_ip_address = true
   }
+  instance_initiated_shutdown_behavior = "terminate"
 
-#  key_name = "key-1"
-  vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
-
-#  user_data = "${base64encode(data.template_file.user_data_hw.rendered)}"
 }
 
 resource "aws_autoscaling_group" "asg-web" {
+  name_prefix = "my-asg"  
   launch_template { 
     id = aws_launch_template.web-server.id
+    version = aws_launch_template.web-server.latest_version
   }
   # availability_zones   = data.aws_availability_zones.available.names
   min_size = 2
   max_size = 2
-   vpc_zone_identifier       = [aws_subnet.subnet1.id, aws_subnet.subnet2.id ]
+  desired_capacity = 2
+  vpc_zone_identifier       = [aws_subnet.subnet1.id, aws_subnet.subnet2.id ]
   health_check_type = "EC2"
 
   tag {
