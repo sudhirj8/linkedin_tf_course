@@ -130,7 +130,7 @@ resource "aws_autoscaling_group" "asg-web" {
   launch_template { 
     id = aws_launch_template.web-server.id
   }
-  availability_zones   = data.aws_availability_zones.available.names
+  # availability_zones   = data.aws_availability_zones.available.names
   min_size = 2
   max_size = 2
    vpc_zone_identifier       = [aws_subnet.subnet1.id, aws_subnet.subnet2.id ]
