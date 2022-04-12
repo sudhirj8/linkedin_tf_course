@@ -84,6 +84,8 @@ resource "aws_instance" "nodejs1" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.subnet1.id
   vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
+  iam_instance_profile = aws_iam_instance_profile.test_profile.name
+
 #  key_name               = var.ssh_key_name
 
 #  connection {
@@ -93,6 +95,8 @@ resource "aws_instance" "nodejs1" {
 #    private_key = file(var.private_key_path)
 #  }
 }
+
+
 
 
 # //////////////////////////////
