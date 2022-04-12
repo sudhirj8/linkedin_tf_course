@@ -114,7 +114,9 @@ resource "aws_launch_template" "web-server" {
 }
 
 resource "aws_autoscaling_group" "asg-web" {
-  launch_template = aws_launch_template.web-server.id
+  launch_template = { 
+    id = aws_launch_template.web-server.id
+  }
   availability_zones   = data.aws_availability_zones.available.names
   min_size = 2
   max_size = 5
