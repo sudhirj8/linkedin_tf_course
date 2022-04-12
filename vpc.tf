@@ -115,7 +115,7 @@ resource "aws_launch_template" "web-server" {
   }
     image_id = data.aws_ami.aws-linux.id
     instance_initiated_shutdown_behavior = "terminate"
-    instance_type = "t2.small"
+    instance_type = "t2.nano"
   network_interfaces {
     associate_public_ip_address = true
   }
