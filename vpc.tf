@@ -20,6 +20,13 @@ resource "aws_subnet" "subnet1" {
   availability_zone = data.aws_availability_zones.available.names[1]
 }
 
+resource "aws_subnet" "subnet2" {
+  cidr_block = var.subnet2_cidr
+  vpc_id = aws_vpc.vpc1.id
+  map_public_ip_on_launch = "true"
+  availability_zone = data.aws_availability_zones.available.names[2]
+}
+
 # INTERNET_GATEWAY
 resource "aws_internet_gateway" "gateway1" {
   vpc_id = aws_vpc.vpc1.id
@@ -108,7 +115,7 @@ resource "aws_launch_template" "web-server" {
   }
     image_id = data.aws_ami.aws-linux.id
     instance_initiated_shutdown_behavior = "terminate"
-  instance_type = "t2.small"
+    instance_type = "t2.small"
   network_interfaces {
     associate_public_ip_address = true
   }
@@ -125,9 +132,9 @@ resource "aws_autoscaling_group" "asg-web" {
   }
   availability_zones   = data.aws_availability_zones.available.names
   min_size = 2
-  max_size = 5
-
-  health_check_type = "ELB"
+  max_size = 2
+   vpc_zone_identifier       = [aws_subnet.subnet1.id, aws_subnet.subnet2.id ]
+  health_check_type = "EC2"
 
   tag {
     key                 = "Name"
