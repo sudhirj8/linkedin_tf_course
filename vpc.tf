@@ -109,7 +109,10 @@ resource "aws_launch_template" "web-server" {
     image_id = data.aws_ami.aws-linux.id
     instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t2.small"
-associate_public_ip_address = true
+  network_interfaces {
+    associate_public_ip_address = true
+  }
+
 #  key_name = "key-1"
   vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
 
