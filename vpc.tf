@@ -100,8 +100,10 @@ resource "aws_instance" "nodejs1" {
 resource "aws_launch_template" "web-server" {
   name = "web-server-template"
   disable_api_termination = true
-  iam_instance_profile = aws_iam_instance_profile.test_profile.name
   
+   iam_instance_profile {
+    name = aws_iam_instance_profile.test_profile.name
+  }
     ami = data.aws_ami.aws-linux.id
     instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t2.small"
@@ -126,32 +128,6 @@ resource "aws_autoscaling_group" "asg-web" {
   }
 }
 
-# //////////////////////////////
-# DATA
-# //////////////////////////////
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
-data "aws_ami" "aws-linux" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn-ami-hvm*"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
 
 # //////////////////////////////
 # OUTPUT
