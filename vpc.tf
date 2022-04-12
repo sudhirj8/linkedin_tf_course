@@ -66,6 +66,10 @@ resource "aws_security_group" "sg-nodejs-instance" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   
+
+  # form 8863
+  # 1098
+  
   egress {
     from_port = 0
     to_port = 0

@@ -16,3 +16,5 @@ variable "subnet1_cidr" {
 
 # variables
 # 
+
+# aws ec2 create-key-pair --key-name tf_key --query 'KeyMaterial' --output text | out-file -encoding ascii -filepath tf_key.pem
