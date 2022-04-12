@@ -97,7 +97,34 @@ resource "aws_instance" "nodejs1" {
 }
 
 
+resource "aws_launch_template" "web-server" {
+  name = "web-server-template"
+  disable_api_termination = true
+  iam_instance_profile = aws_iam_instance_profile.test_profile.name
+  
+    ami = data.aws_ami.aws-linux.id
+    instance_initiated_shutdown_behavior = "terminate"
+  instance_type = "t2.small"
+#  key_name = "key-1"
+  vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
 
+#  user_data = "${base64encode(data.template_file.user_data_hw.rendered)}"
+}
+
+resource "aws_autoscaling_group" "asg-web" {
+  launch_template = aws_launch_template.web-server.id
+  availability_zones   = data.aws_availability_zones.all.names
+  min_size = 2
+  max_size = 5
+
+  health_check_type = "ELB"
+
+  tag {
+    key                 = "Name"
+    value               = "terraform-asg-sample"
+    propagate_at_launch = true
+  }
+}
 
 # //////////////////////////////
 # DATA
