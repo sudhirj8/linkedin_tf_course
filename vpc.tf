@@ -16,14 +16,14 @@ resource "aws_vpc" "vpc1" {
 resource "aws_subnet" "subnet1" {
   cidr_block = var.subnet1_cidr
   vpc_id = aws_vpc.vpc1.id
-#  map_public_ip_on_launch = "true"
+  map_public_ip_on_launch = "true"
   availability_zone = data.aws_availability_zones.available.names[1]
 }
 
 resource "aws_subnet" "subnet2" {
   cidr_block = var.subnet2_cidr
   vpc_id = aws_vpc.vpc1.id
-#  map_public_ip_on_launch = "true"
+  map_public_ip_on_launch = "true"
   availability_zone = data.aws_availability_zones.available.names[2]
 }
 
@@ -123,9 +123,9 @@ resource "aws_launch_template" "web-server" {
   vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
 
   disable_api_termination = true
-  network_interfaces {
-    associate_public_ip_address = true
-  }
+#  network_interfaces {
+#    associate_public_ip_address = true
+#  }
   instance_initiated_shutdown_behavior = "terminate"
 
 }
